@@ -15,16 +15,17 @@ function check_input(seq1, seq2, similarity_mat_header)
     for c in split(seq1[2:length(seq1)], "")
         if in(c, possible_AAs) == false
             println(c, " is not included in the similarity matrix provided")
-            exit(1)
+            throw(ArgumentError("unkown character in sequences"))
         end
     end
 
     for c in split(seq2[2:length(seq2)], "")
         if in(c, possible_AAs) == false
             println(c, " is not included in the similarity matrix provided")
-            exit(1)
+            throw(ArgumentError("unkown character in sequences"))
         end
     end
+    return(true)
 end
 
 ################################################################################
