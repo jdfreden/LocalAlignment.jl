@@ -1,0 +1,8 @@
+name = "LocalAlignment"
+uuid = "09d04458-af49-454a-94d4-19eb36112dd8"
+authors = ["jdfre "]
+version = "0.1.0"
+
+[deps]
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
