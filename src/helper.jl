@@ -28,12 +28,26 @@ function check_input(seq1, seq2, similarity_mat_header)
     return(true)
 end
 
+function load_blosum()
+    blosum_62, blosum_62_header = readdlm("reference/blosum62.csv", ',', Int, '\n', header = true)
+
+    blosum_62_header = [blosum_62_header "GAP" "AFF"]
+
+    blosum_62 = hcat(blosum_62, fill(-10, 24))
+    blosum_62 = hcat(blosum_62, fill(-1, 24))
+    blosum_62 = vcat(blosum_62, fill(-10, (1,26)))
+    blosum_62 = vcat(blosum_62, fill(-1, (1, 26)))
+    return(blosum_62, blosum_62_header)
+
+end
+
+
 ################################################################################
-function convert_simple_scoring(seq1, seq2, scoring_scheme, affine)
+function convert_simple_scoring(sequences, scoring_scheme, affine)
     if affine == false
-        new_header = unique([split(sequences[1][2:length(sequences[1])],""); split(sequences[2][2:length(sequences[2])],""); "*"])
+        new_header = unique([split(sequences[1][2:length(sequences[1])],""); split(sequences[2][2:length(sequences[2])],""); "GAP"])
     else
-        new_header = unique([split(sequences[1][2:length(sequences[1])],""); split(sequences[2][2:length(sequences[2])],""); "*"; "AFF"])
+        new_header = unique([split(sequences[1][2:length(sequences[1])],""); split(sequences[2][2:length(sequences[2])],""); "GAP"; "AFF"])
     end
 
     sim_mat = zeros(Int32, length(new_header), length(new_header))
@@ -97,7 +111,6 @@ function search_header(header, query)
     for i in range(1, stop = length(header))
         if header[i] == string(query)
             ind = i
-            #println("FOUND ", query, " at ", ind)
             break
         end
     end
