@@ -1,6 +1,6 @@
 ################################################################################
 function parse_file(filepath)
-    sequences = readdlm(filepath, '\n', String, '\n')
+    sequences = DelimitedFiles.readdlm(filepath, '\n', String, '\n')
 
     seq1 = "-" * sequences[2]
     seq2 = "-" * sequences[4]
@@ -8,6 +8,12 @@ function parse_file(filepath)
     return(sequences)
 end
 
+function parse_similiarity_matrix_file(sim_mat_path)
+    sim_mat, header = readdlm(sim_mat_path, ',', Int, '\n', header = true)
+
+    return(sim_mat, header)
+
+end
 ################################################################################
 function check_input(seq1, seq2, similarity_mat_header)
     possible_AAs = Set(similarity_mat_header)
@@ -27,7 +33,7 @@ function check_input(seq1, seq2, similarity_mat_header)
     end
     return(true)
 end
-
+################################################################################
 function load_blosum()
     blosum_62, blosum_62_header = readdlm("reference/blosum62.csv", ',', Int, '\n', header = true)
 
@@ -118,3 +124,15 @@ function search_header(header, query)
 end
 
 ################################################################################
+
+function determine_suboptimal_threshold(percent_change, max_score)
+    sub_diff = percent_change * max_score
+    sub_diff = ceil(sub_diff)
+    if sub_diff < 1 && simple_scores["Score"] > 1
+        sub_diff = 1
+    end
+
+    sub_threshold = max_score - sub_diff
+
+    return(sub_threshold)
+end

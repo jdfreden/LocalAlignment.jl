@@ -30,3 +30,16 @@ LocalAlignment.traceback(simple_scores["col"], simple_scores["row"], simple_scor
 
 #traceback for simple scoring affine
 LocalAlignment.traceback(affine_scores["col"], affine_scores["row"], affine_scores["traceback_matrix"], affine_scores["score_matrix"], sequences[1], sequences[2])
+
+#suboptimal traceback for simple scoring non affine
+
+sub_threshold = LocalAlignment.determine_suboptimal_threshold(.1, simple_scores["Score"])
+
+sub_inds = broadcast(<=, sub_threshold, simple_scores["scores"])
+
+sub_scores = simple_scores["scores"][sub_inds]
+sub_coors = simple_scores["coors"][sub_inds]
+
+
+LocalAlignment.suboptimal_traceback(sub_coors, sub_scores, simple_scores["traceback_matrix"], simple_scores["score_matrix"], sequences[1], sequences[2])
+LocalAlignment.alignment(file, match = 1, mismatch = -1, gap = -2, percent_difference = .1)
