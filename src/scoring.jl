@@ -56,6 +56,8 @@ end
 
 
 function score_affine(seq1, seq2, score_mat, traceback_mat, sim_mat, sim_mat_header)
+    coordinates = []
+    scores = []
     indices_max = (-1, -1)
     max_mat = "NONE"
     max_score = -1
@@ -96,6 +98,8 @@ function score_affine(seq1, seq2, score_mat, traceback_mat, sim_mat, sim_mat_hea
             if D_cand[index] > max_score
                 max_score = D_cand[index]
                 indices_max = (row, col)
+                append!(scores, D_cand[index])
+                append!(coordinates, [[row, col]])
             end
 
             D[row, col] = D_cand[index]
@@ -104,6 +108,8 @@ function score_affine(seq1, seq2, score_mat, traceback_mat, sim_mat, sim_mat_hea
             #println(p1, p2)
         end
     end
-    ret = Dict([("Score", max_score), ("col", indices_max[2]), ("row", indices_max[1]), ("trace_matrix", trace_mat)])
+
+    order = sortperm(scores, rev = true)
+    ret = Dict([("Score", max_score), ("col", indices_max[2]), ("row", indices_max[1]), ("coors", coordinates[order]), ("scores", scores[order]), ("score_matrix", D), ("traceback_matrix", trace_mat)])
     return(ret)
 end
