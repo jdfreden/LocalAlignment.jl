@@ -2,6 +2,7 @@ function traceback(col, row, traceback_mat, score_mat, seq1, seq2)
 
     seq1_align = ""
     seq2_align = ""
+    s = score_mat[row, col]
     while score_mat[row, col] != 0
         if traceback_mat[row, col] == 0
             char_to_add1 = seq1[col]
@@ -20,18 +21,31 @@ function traceback(col, row, traceback_mat, score_mat, seq1, seq2)
         seq1_align = char_to_add1 * seq1_align
         seq2_align = char_to_add2 * seq2_align
     end
+    println(seq1_align)
+    println(seq2_align)
+    println(s)
+    println()
     return(Dict([("seq1", seq1_align), ("seq2", seq2_align)]))
 end
 
 
 function suboptimal_traceback(coors, scores, traceback_mat, score_mat, seq1, seq2)
-    bin_mat = BitArray(undef, length(seq2), length(seq1))
+    #println(coors)
+    #println(scores)
+    bin_mat = zeros(Int8, length(seq2), length(seq1))
+    #for row in size(bin_mat, 1)
+    #    for col in size(bin_mat, 2)
+    #        bin_mat[row, col] = false
+    #    end
+    #end
     alignments = []
     seq1_align = ""
     seq2_align = ""
     seq1_align_ind = []
     seq2_align_ind = []
     number_of_alignments = 1
+    #println(coors[1])
+    #print(length(coors))
     for i in range(1, stop = length(coors))
         row = coors[i][1]
         col = coors[i][2]
@@ -42,11 +56,11 @@ function suboptimal_traceback(coors, scores, traceback_mat, score_mat, seq1, seq
         seq2_align_ind = []
         killed_alignment = false
         while score_mat[row, col] != 0
-            if bin_mat[row,col] != true
-                bin_mat[row, col] = true
+            if bin_mat[row,col] != 1
+                bin_mat[row, col] = 1
             else
                 killed_alignment = true
-                break
+                #break
             end
             if traceback_mat[row, col] == 0
                 char_to_add1 = seq1[col]
@@ -68,16 +82,20 @@ function suboptimal_traceback(coors, scores, traceback_mat, score_mat, seq1, seq
             append!(seq2_align_ind, row)
 
         end
-        if killed_alignment != true
-            println(seq1_align)
-            println(seq2_align)
-            println(s)
-            println("-----------")
+
+        if killed_alignment == false
             seq1_name = "seq1." * string(number_of_alignments)
             seq2_name = "seq2." * string(number_of_alignments)
             number_of_alignments = number_of_alignments + 1
+            println(seq1_name)
+            println(seq1_align)
+            println(seq2_name)
+            println(seq2_align)
             append!(alignments, [seq1_name, seq1_align_ind, seq2_name, seq2_align_ind])
         end
+        t = length(alignments)
+        b = 1 + 1
     end
+    println(alignments)
     return(alignments)
 end

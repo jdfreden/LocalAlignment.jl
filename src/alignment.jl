@@ -32,12 +32,16 @@ function alignment(file_path; match = nothing, mismatch = nothing, gap = nothing
         println("percent_difference was not specified, Only returning optimal alignment")
         traceback(scores["col"], scores["row"], scores["traceback_matrix"], scores["score_matrix"], sequences[1], sequences[2])
     else
-        println("returning alignments whose scores are within " * string(percent_difference * 100) * "% of the max")
+        #println("returning alignments whose scores are within " * string(percent_difference * 100) * "% of the max")
         sub_thres = determine_suboptimal_threshold(percent_difference, scores["Score"])
         sub_inds = broadcast(<=, sub_thres, scores["scores"])
         sub_scores = scores["scores"][sub_inds]
         sub_coors = scores["coors"][sub_inds]
         alignments = suboptimal_traceback(sub_coors, sub_scores, scores["traceback_matrix"], scores["score_matrix"], sequences[1], sequences[2])
+
+        for i in 1:4:length(alignments)
+            #println(i)
+        end
     end
 
     if write_viz_file == true

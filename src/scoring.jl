@@ -38,6 +38,7 @@ function score_non_affine(seq1, seq2, score_mat, traceback_mat, sim_mat, sim_mat
             append!(scores, candidates[index])
             append!(coordinates, [[row, col]])
         end
+        #println(row)
     end
 
     order = sortperm(scores, rev = true)
@@ -102,6 +103,7 @@ function score_affine(seq1, seq2, score_mat, traceback_mat, sim_mat, sim_mat_hea
 
             #println(p1, p2)
         end
+        #println(row)
     end
 
     order = sortperm(scores, rev = true)
