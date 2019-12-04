@@ -2,7 +2,7 @@
 
 **THIS WAS DONE FOR A CLASS. DO NOT USE FOR PRODUCTION**
 
-This is package for performing pairwise Smith-Waterman local alignment. Orginally developed for aligning protein sequences, this package is capable of locally aligning any pair of strings given in FASTA format. Alignment methods included are:
+This is package for performing pairwise Smith-Waterman local alignment. Orginally developed for aligning protein sequences, this package is capable of locally aligning any pair of strings given in FASTA where the sequences are all on one line format. Alignment methods included are:
   * optimal Smith-Waterman local alignment
   * local alignment with affine gaps (Gotoh, 1982)
   * suboptimal alignment within a percent change of maximum score
