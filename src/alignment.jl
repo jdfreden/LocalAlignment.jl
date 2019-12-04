@@ -1,4 +1,4 @@
-function alignment(file_path; match = nothing, mismatch = nothing, gap = nothing, gapext = nothing, similarity_matrix_path = nothing, percent_difference = nothing)
+function alignment(file_path; match = nothing, mismatch = nothing, gap = nothing, gapext = nothing, similarity_matrix_path = nothing, percent_difference = nothing, write_viz_file = false)
     sequences = parse_file(file_path)
     affine = false
 
@@ -34,13 +34,33 @@ function alignment(file_path; match = nothing, mismatch = nothing, gap = nothing
     else
         println("returning alignments whose scores are within " * string(percent_difference * 100) * "% of the max")
         sub_thres = determine_suboptimal_threshold(percent_difference, scores["Score"])
-
         sub_inds = broadcast(<=, sub_thres, scores["scores"])
         sub_scores = scores["scores"][sub_inds]
         sub_coors = scores["coors"][sub_inds]
-        suboptimal_traceback(sub_coors, sub_scores, scores["traceback_matrix"], scores["score_matrix"], sequences[1], sequences[2], sub_thres)
+        alignments = suboptimal_traceback(sub_coors, sub_scores, scores["traceback_matrix"], scores["score_matrix"], sequences[1], sequences[2])
     end
 
+    if write_viz_file == true
+        io = open("LocalAlignment_Visualization_sequences.csv", "w")
+        string_to_write = sequences[1] * "," * sequences[2] * "\n"
+        write(io, string_to_write)
 
+        close(io)
+
+
+        io = open("LocalAlignment_Visualization_file.csv", "w")
+        for i in 1:2:length(alignments)
+            alignment_name = alignments[i]
+            positions = alignments[i + 1]
+            string_to_write = alignment_name
+            for p in positions
+                string_to_write = string_to_write * "," * string(p)
+            end
+            string_to_write = string_to_write * "\n"
+            write(io, string_to_write)
+        end
+
+        close(io)
+    end
 
 end
