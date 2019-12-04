@@ -1,4 +1,4 @@
-#LocalAlignment.jl
+# LocalAlignment.jl
 
 **THIS WAS DONE FOR A CLASS. DO NOT USE FOR PRODUCTION**
 
