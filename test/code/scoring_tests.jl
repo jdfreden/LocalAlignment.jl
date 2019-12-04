@@ -3,6 +3,7 @@ using LocalAlignment
 
 file = "test/files/scoring_test.fasta"
 file2 = "test/files/test_affine.fasta"
+file3 = "test/files/test_strings.fasta"
 
 sequences = LocalAlignment.parse_file(file)
 
@@ -43,4 +44,4 @@ sub_coors = simple_scores["coors"][sub_inds]
 
 
 LocalAlignment.suboptimal_traceback(sub_coors, sub_scores, simple_scores["traceback_matrix"], simple_scores["score_matrix"], sequences[1], sequences[2])
-LocalAlignment.alignment(file2, match = 3, mismatch = -1, gap = -2, gapext = -1, percent_difference = .2, write_viz_file = true)
+LocalAlignment.alignment(file, match = 1, mismatch = -1, gap = -2, percent_difference = .2, write_viz_file = true)
