@@ -7,6 +7,7 @@ file3 = "test/files/test_strings.fasta"
 file4 = "test/files/test_large_proteins.fasta"
 file5 = "test/files/test_3.fasta"
 medium_protein = "test/files/test_medium_proteins.fasta"
+file6 = "test/files/test_4.fasta"
 
 sequences = LocalAlignment.parse_file(file)
 
@@ -48,12 +49,7 @@ sub_coors = simple_scores["coors"][sub_inds]
 
 LocalAlignment.suboptimal_traceback(sub_coors, sub_scores, simple_scores["traceback_matrix"], simple_scores["score_matrix"], sequences[1], sequences[2])
 
-for i in 1:100
-    #println(i)
-    LocalAlignment.alignment(file4, match = 1, mismatch = -1, gap = -2, percent_difference = .05)
-    #println("____________")
-end
+
+@time LocalAlignment.alignment("test/files/performance/length_n.fasta", percent_difference = .3)
+
 LocalAlignment.alignment(file4, match = 1, mismatch = -1, gap = -2)
-
-
-zeros(Bool, 2, 3)
