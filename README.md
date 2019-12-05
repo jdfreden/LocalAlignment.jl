@@ -1,6 +1,6 @@
 # LocalAlignment.jl
 
-**THIS WAS DONE FOR A CLASS. DO NOT USE FOR PRODUCTION**
+**THIS IS A WORK IN PROGRESS. DO NOT USE FOR PRODUCTION**
 
 This is package for performing pairwise Smith-Waterman local alignment. Orginally developed for aligning protein sequences, this package is capable of locally aligning any pair of strings given in FASTA where the sequences are all on one line format. Alignment methods included are:
   * optimal Smith-Waterman local alignment
